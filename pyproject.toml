@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hospo-matcher"
+name = "hospo_matcher"
 version = "0.1.0"
 description = ""
 authors = ["Callum Macaskill"]
@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.11"
 fastapi = "^0.111.0"
 pre-commit = "^3.7.1"
+pymongo = "^4.7.2"
 
 
 [build-system]
