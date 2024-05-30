@@ -161,3 +161,6 @@ cython_debug/
 
 # Local MongoDB data
 database/data/
+
+# Environment variable file
+.env.local
