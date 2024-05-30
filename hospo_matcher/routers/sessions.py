@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from hospo_matcher.controllers.crud import create_document, read_document
 from hospo_matcher.utils.data_models import Session
@@ -32,4 +32,10 @@ async def read_session(
     log.info(f"Reading session with code {code}")
     query = {"code": code}
     result = read_document(collection, query)
+
+    if not result:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, f"Session with code {code} not found."
+        )
+
     return result
