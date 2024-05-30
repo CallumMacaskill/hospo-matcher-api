@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Annotated, Optional
 
-import pydantic
 from pydantic import BaseModel, BeforeValidator, ConfigDict, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 

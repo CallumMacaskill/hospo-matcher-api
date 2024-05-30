@@ -13,7 +13,6 @@ class CollectionNames(str, Enum):
     sessions = "sessions"
 
 
-# TODO: Refactor collection handling and crud operations away from each other.
 class DB:
     def __init__(self):
         self._mongo_client = None
@@ -36,14 +35,6 @@ class DB:
     def get_session_collection(self) -> Collection:
         log.debug(f"Getting collection {CollectionNames.sessions.value}.")
         return self.db_client.sessions
-
-    def create_document(self, collection: Collection, data: dict) -> InsertOneResult:
-        result = collection.insert_one(data)
-        return result
-
-    def read_document(self, collection: Collection, query: dict) -> dict:
-        result = collection.find_one(query)
-        return result
 
 
 db = DB()

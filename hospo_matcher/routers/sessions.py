@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 
+from hospo_matcher.controllers.crud import create_document, read_document
 from hospo_matcher.utils.data_models import Session
 from hospo_matcher.utils.database import db
 from hospo_matcher.utils.logger import log
@@ -16,7 +17,7 @@ async def create_session(
     """
     data = session.model_dump(by_alias=True, exclude=["id"])
     log.info(f"Creating session with data:\n{data}")
-    result = db.create_document(collection, data)
+    result = create_document(collection, data)
     log.info(f"Created session with id {result.inserted_id}")
     return str(result.inserted_id)
 
@@ -30,5 +31,5 @@ async def read_session(
     """
     log.info(f"Reading session with code {code}")
     query = {"code": code}
-    result = db.read_document(collection, query)
+    result = read_document(collection, query)
     return result
