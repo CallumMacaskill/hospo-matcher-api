@@ -8,13 +8,13 @@ from hospo_matcher.utils.logger import log
 router = APIRouter(prefix="/venues")
 
 @router.get(path="/", response_model=list[Venue], response_model_by_alias=False)
-async def read_venues(n: int = 10, db:Database=Depends(driver.get_db_client)) -> list[Venue]:
+async def read_venues(n: int = 10, query: dict = {}, db:Database=Depends(driver.get_db_client)) -> list[Venue]:
     """
     Retrieve a session object by matching code.
     """
     log.info(f"Reading {n} venues")
     collection = db.venues
-    result = collection.find().limit(n)
+    result = collection.find(query).limit(n)
 
     venues = list(result)
 

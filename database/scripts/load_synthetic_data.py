@@ -1,9 +1,9 @@
 import argparse
 import json
 
-from hospo_matcher.utils.database import driver
+from hospo_matcher.utils.database import Driver
 from hospo_matcher.utils.logger import log
-from hospo_matcher.utils.data_models import Venue
+from hospo_matcher.utils.data_models import Venue, settings
 
 if __name__=="__main__":
     # Get inputs
@@ -18,6 +18,7 @@ if __name__=="__main__":
     
     log.info(f"Loaded {len(file_data)} venues from file.")
 
+    driver = Driver(db_name=settings.MONGODB_TEST_NAME)
     db_client = driver.get_db_client()
     venues_collection = db_client.venues
 
