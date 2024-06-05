@@ -1,0 +1,272 @@
+[
+    {
+        "name": "Gourmet Garden",
+        "region": "NZ-AUK",
+        "hour_open": 9,
+        "hour_closed": 22
+    },
+    {
+        "name": "Bistro Bliss",
+        "region": "NZ-WGN",
+        "hour_open": 8,
+        "hour_closed": 21
+    },
+    {
+        "name": "Cafe Haven",
+        "region": "NZ-CAN",
+        "hour_open": 7,
+        "hour_closed": 20
+    },
+    {
+        "name": "Sip & Savor",
+        "region": "NZ-OTA",
+        "hour_open": 10,
+        "hour_closed": 22
+    },
+    {
+        "name": "Mingle & Munch",
+        "region": "NZ-WKO",
+        "hour_open": 9,
+        "hour_closed": 21
+    },
+    {
+        "name": "Whistle Stop",
+        "region": "NZ-HKB",
+        "hour_open": 8,
+        "hour_closed": 20
+    },
+    {
+        "name": "Zenith Bar",
+        "region": "NZ-NTL",
+        "hour_open": 11,
+        "hour_closed": 23
+    },
+    {
+        "name": "Epicurean Escape",
+        "region": "NZ-MWT",
+        "hour_open": 10,
+        "hour_closed": 22
+    },
+    {
+        "name": "Happy Home",
+        "region": "NZ-TKI",
+        "hour_open": 7,
+        "hour_closed": 21
+    },
+    {
+        "name": "Vista Views Cafe",
+        "region": "NZ-BOP",
+        "hour_open": 8,
+        "hour_closed": 22
+    },
+    {
+        "name": "Leisure Lounge",
+        "region": "NZ-NSN",
+        "hour_open": 9,
+        "hour_closed": 21
+    },
+    {
+        "name": "Oasis Cafe",
+        "region": "NZ-NTL",
+        "hour_open": 10,
+        "hour_closed": 20
+    },
+    {
+        "name": "Tavern Tranquil",
+        "region": "NZ-GIS",
+        "hour_open": 11,
+        "hour_closed": 21
+    },
+    {
+        "name": "Rendezvous Retreat",
+        "region": "NZ-WKO",
+        "hour_open": 10,
+        "hour_closed": 23
+    },
+    {
+        "name": "Serene Sips",
+        "region": "NZ-HKB",
+        "hour_open": 8,
+        "hour_closed": 22
+    },
+    {
+        "name": "Quaint Cafe",
+        "region": "NZ-TAS",
+        "hour_open": 7,
+        "hour_closed": 20
+    },
+    {
+        "name": "Hearty Haven",
+        "region": "NZ-MBH",
+        "hour_open": 9,
+        "hour_closed": 21
+    },
+    {
+        "name": "Rustic Retreat",
+        "region": "NZ-WTC",
+        "hour_open": 8,
+        "hour_closed": 22
+    },
+    {
+        "name": "Bistro Breeze",
+        "region": "NZ-MWT",
+        "hour_open": 7,
+        "hour_closed": 21
+    },
+    {
+        "name": "Cafe Comfort",
+        "region": "NZ-CAN",
+        "hour_open": 9,
+        "hour_closed": 22
+    },
+    {
+        "name": "Gastronomy Galore",
+        "region": "NZ-OTA",
+        "hour_open": 11,
+        "hour_closed": 23
+    },
+    {
+        "name": "Savory Stop",
+        "region": "NZ-BOP",
+        "hour_open": 10,
+        "hour_closed": 21
+    },
+    {
+        "name": "Palate Pleasures",
+        "region": "NZ-WGN",
+        "hour_open": 8,
+        "hour_closed": 22
+    },
+    {
+        "name": "Culinary Corner",
+        "region": "NZ-AUK",
+        "hour_open": 7,
+        "hour_closed": 21
+    },
+    {
+        "name": "Feast & Fable",
+        "region": "NZ-HKB",
+        "hour_open": 9,
+        "hour_closed": 23
+    },
+    {
+        "name": "Harmony House",
+        "region": "NZ-WKO",
+        "hour_open": 8,
+        "hour_closed": 21
+    },
+    {
+        "name": "Taste Buds Tavern",
+        "region": "NZ-NSN",
+        "hour_open": 11,
+        "hour_closed": 22
+    },
+    {
+        "name": "Epicurean Enclave",
+        "region": "NZ-MWT",
+        "hour_open": 10,
+        "hour_closed": 20
+    },
+    {
+        "name": "Cuisine Cove",
+        "region": "NZ-TKI",
+        "hour_open": 9,
+        "hour_closed": 22
+    },
+    {
+        "name": "Dine & Delight",
+        "region": "NZ-GIS",
+        "hour_open": 8,
+        "hour_closed": 21
+    },
+    {
+        "name": "Gastronome's Grange",
+        "region": "NZ-CAN",
+        "hour_open": 7,
+        "hour_closed": 20
+    },
+    {
+        "name": "Snack Shack",
+        "region": "NZ-BOP",
+        "hour_open": 10,
+        "hour_closed": 22
+    },
+    {
+        "name": "Tasty Treats",
+        "region": "NZ-WGN",
+        "hour_open": 9,
+        "hour_closed": 23
+    },
+    {
+        "name": "Gourmet Getaway",
+        "region": "NZ-OTA",
+        "hour_open": 8,
+        "hour_closed": 21
+    },
+    {
+        "name": "Ballroom Bliss",
+        "region": "NZ-AUK",
+        "hour_open": 7,
+        "hour_closed": 21
+    },
+    {
+        "name": "Cafe Couture",
+        "region": "NZ-HKB",
+        "hour_open": 10,
+        "hour_closed": 22
+    },
+    {
+        "name": "Eater's Eden",
+        "region": "NZ-WKO",
+        "hour_open": 8,
+        "hour_closed": 21
+    },
+    {
+        "name": "Nibble Nook",
+        "region": "NZ-NSN",
+        "hour_open": 9,
+        "hour_closed": 23
+    },
+    {
+        "name": "Bite Bistro",
+        "region": "NZ-MWT",
+        "hour_open": 10,
+        "hour_closed": 22
+    },
+    {
+        "name": "Snack & Sip",
+        "region": "NZ-TKI",
+        "hour_open": 8,
+        "hour_closed": 20
+    },
+    {
+        "name": "The Gourmet Spot",
+        "region": "NZ-CAN",
+        "hour_open": 7,
+        "hour_closed": 22
+    },
+    {
+        "name": "Delectable Delights",
+        "region": "NZ-BOP",
+        "hour_open": 9,
+        "hour_closed": 23
+    },
+    {
+        "name": "Dough Time",
+        "region": "NZ-AUK",
+        "hour_open": 8,
+        "hour_closed": 21
+    },
+    {
+        "name": "Tasty Tavern",
+        "region": "NZ-HKB",
+        "hour_open": 10,
+        "hour_closed": 22
+    },
+    {
+        "name": "Eater's Enclave",
+        "region": "NZ-WKO",
+        "hour_open": 7,
+        "hour_closed": 20
+    }
+]

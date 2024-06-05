@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Load data",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "database/scripts/load_synthetic_data.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--file-path",
+                "database/scripts/synthetic_data.json"
+            ]
+        },
+        {
             "name": "Python Debugger: FastAPI",
             "type": "debugpy",
             "request": "launch",
