@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-
 from hospo_matcher.utils.data_models import Session
 from hospo_matcher.utils.database import driver
 from hospo_matcher.utils.logger import log
+from hospo_matcher.utils.dependencies import DBClientDep
 
 router = APIRouter(prefix="/sessions")
 
 
 @router.post(path="/")
-async def create_session(session: Session, db: AsyncIOMotorDatabase=Depends(driver.get_db_client)):
+async def create_session(session: Session, db: DBClientDep):
     """
     Create a session document in the database.
     """
@@ -22,7 +22,7 @@ async def create_session(session: Session, db: AsyncIOMotorDatabase=Depends(driv
 
 
 @router.get(path="/{code}", response_model=Session, response_model_by_alias=False)
-async def read_session(code: str, db: AsyncIOMotorDatabase=Depends(driver.get_db_client)) -> Session:
+async def read_session(code: str, db: DBClientDep) -> Session:
     """
     Retrieve a session object by matching code.
     """
