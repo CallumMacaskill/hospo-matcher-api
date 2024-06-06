@@ -1,9 +1,12 @@
-def test_read_root(client):
-    response = client.get("/")
+import pytest
+
+@pytest.mark.anyio
+async def test_read_root(async_client):
+    response = await async_client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "API is running."}
 
-
-def test_read_sessions(client):
-    response = client.get("/sessions/123")
+@pytest.mark.anyio
+async def test_read_sessions(async_client):
+    response = await async_client.get("/sessions/123")
     assert response.status_code == 404
