@@ -1,16 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from motor.motor_asyncio import AsyncIOMotorDatabase
+from bson import ObjectId
+from fastapi import APIRouter, HTTPException, status
 
-from hospo_matcher.utils.data_models import Session
-from hospo_matcher.utils.database import driver
-from hospo_matcher.utils.logger import log
+from hospo_matcher.utils.data_models import Session, UserVotes
 from hospo_matcher.utils.dependencies import DBClientDep
+from hospo_matcher.utils.logger import log
 
 router = APIRouter(prefix="/sessions")
 
 
 @router.post(path="/")
-async def create_session(session: Session, db: DBClientDep):
+async def create_session(session: Session, db: DBClientDep) -> str:
     """
     Create a session document in the database.
     """
@@ -36,3 +35,38 @@ async def read_session(code: str, db: DBClientDep) -> Session:
         )
 
     return result
+
+
+@router.post(path="/{code}/{user_id}")
+async def submit_votes(
+    code: str, user_id: str, votes: UserVotes, db: DBClientDep
+) -> str:
+    """
+    Add user's unique vote information to associated session object
+    """
+    log.info(f"Adding votes to session {code} under user {user_id}")
+
+    # Get user's existing votes
+    session_doc = await db.sessions.find_one({"code": code})
+    if session_doc is None:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, f"Session with code {code} not found."
+        )
+    session = Session(**session_doc)
+
+    # Add new votes
+    votes.upvotes.update(session.user_votes[user_id])
+    session.user_votes[user_id] = list(votes.upvotes)
+
+    # Update session document
+    result = await db.sessions.update_one(
+        {"_id": ObjectId(session.id)}, {"$set": {"user_votes": session.user_votes}}
+    )
+
+    if result.modified_count != 1:
+        raise HTTPException(
+            status.HTTP_500_INTERNAL_SERVER_ERROR,
+            f"Vote update operation modified {result.modified_count} documents.",
+        )
+
+    return session.id
