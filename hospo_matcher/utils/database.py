@@ -5,10 +5,9 @@ from hospo_matcher.utils.logger import log
 
 
 class Driver:
-    def __init__(self, db_name=settings.MONGODB_NAME):
+    def __init__(self):
         self._mongo_client = None
         self._db_client = None
-        self._db_name = db_name
 
     @property
     def mongo_client(self) -> AsyncIOMotorClient:
@@ -17,9 +16,9 @@ class Driver:
             log.debug("Set MongoDB client.")
         return self._mongo_client
 
-    def get_db_client(self) -> AsyncIOMotorDatabase:
+    def get_db_client(self, db_name: str = settings.MONGODB_NAME) -> AsyncIOMotorDatabase:
         if self._db_client is None:
-            self._db_client = self.mongo_client[self._db_name]
+            self._db_client = self.mongo_client[db_name]
             log.debug("Set database client.")
         return self._db_client
 
