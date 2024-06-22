@@ -3,10 +3,10 @@ from pytest import fixture
 
 from hospo_matcher.app import app
 from hospo_matcher.utils.database import driver
-from tests.data import test_db_client
+from tests.data import test_db_client, synthetic_sessions, synthetic_venues
+import pytest_asyncio
 
-
-@fixture(scope="session")
+@pytest_asyncio.fixture(scope="session")
 async def async_client(test_db_client):
     def _override_get_db_client():
         return test_db_client
