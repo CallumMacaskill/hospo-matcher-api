@@ -27,7 +27,8 @@ async def synthetic_sessions(
     """
     Generate and insert synthetic sessions into test db.
     """
-    return load_synthetic_sessions(test_db_client, synthetic_venues)
+    venue_ids = list(synthetic_venues.keys())
+    return await load_synthetic_sessions(test_db_client, venue_ids)
 
 
 @pytest.fixture(scope="session")
