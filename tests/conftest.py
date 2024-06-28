@@ -27,7 +27,7 @@ async def synthetic_sessions(
     """
     Generate and insert synthetic sessions into test db.
     """
-    venue_ids = list(synthetic_venues.keys())
+    venue_ids = [venue["id"] for venue in synthetic_venues]
     return await load_synthetic_sessions(test_db_client, venue_ids)
 
 

@@ -27,10 +27,10 @@ async def load_synthetic_venues(db_client: AsyncIOMotorDatabase) -> dict[str:dic
     result = await db_client.venues.insert_many(venues)
     log.info(f"Inserted {len(result.inserted_ids)} venues")
 
-    # Map venue documents to IDs
-    ids = [str(id) for id in result.inserted_ids]
-    mapping = {id: venue for id, venue in zip(ids, venues)}
-    return mapping
+    # Reformat ID object
+    for venue in venues:
+        venue["id"] = str(venue.pop("_id"))
+    return venues
 
 
 async def load_synthetic_sessions(
@@ -66,7 +66,7 @@ async def load_synthetic_sessions(
     result = await db_client.sessions.insert_many(sessions)
     log.info(f"Inserted {len(result.inserted_ids)} sessions")
 
-    # Map session documents to IDs
-    ids = [str(id) for id in result.inserted_ids]
-    mapping = {id: session for id, session in zip(ids, sessions)}
-    return mapping
+    # Reformat ID object
+    for session in sessions:
+        session["id"] = str(session.pop("_id"))
+    return sessions
