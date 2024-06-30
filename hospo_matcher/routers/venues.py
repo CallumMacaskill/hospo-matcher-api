@@ -8,7 +8,7 @@ from hospo_matcher.utils.dependencies import DBClientDep
 
 router = APIRouter(prefix="/venues")
 
-@router.get(path="/", response_model=list[Venue], response_model_by_alias=False)
+@router.post(path="/", response_model=list[Venue], response_model_by_alias=False)
 async def read_venues(db:DBClientDep, n: int = 10, query: dict = {}) -> list[Venue]:
     """
     Retrieve a session object by matching code.

@@ -4,6 +4,7 @@ import pytest
 from httpx import AsyncClient
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from pytest import fixture
+from typing import AsyncGenerator
 
 from database.synthetic_data import load_synthetic_sessions, load_synthetic_venues
 from hospo_matcher.app import app
@@ -54,7 +55,7 @@ async def test_db_client():
 
 
 @pytest.fixture(scope="session")
-async def async_client(test_db_client):
+async def async_client(test_db_client) -> AsyncGenerator[AsyncClient, AsyncClient]:
     """
     API client with overridden db client.
     """
