@@ -68,7 +68,7 @@ class Venue(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 class VenueFilters(BaseModel):
-    n: int = 10,
+    n: int = 10
     exclude_ids: list[str] = []
     include_ids: list[str] = []
 
