@@ -17,6 +17,13 @@ async def read_venues(db:DBClientDep, filters: VenueFilters) -> list[Venue]:
     log.info(f"Reading venues:\nExcluding ids:{filters.exclude_ids}\nIncluding ids:{filters.include_ids}")
     venues = []
 
+    # Check for conflicting IDs
+    intersection = list(set(filters.include_ids) & set(filters.exclude_ids))
+    if intersection:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST, f"Conflicting filters for ids: {intersection}"
+        )
+
     # Retrieve n venues with ID exclusion
     exclude_ids = [ObjectId(x) for x in filters.exclude_ids]
     result = db.venues.find({"_id": {"$nin": exclude_ids}}).limit(filters.n)
