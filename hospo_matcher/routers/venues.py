@@ -44,11 +44,21 @@ async def read_venues(db: DBClientDep, filters: VenueFilters) -> list[Venue]:
 
 
 @router.post(path="/create")
-async def create_session(venue: Venue, db: DBClientDep) -> str:
+async def create_venue(venue: Venue, db: DBClientDep) -> str:
     """
     Create a venue document in the database.
     """
     data = venue.model_dump(by_alias=True, exclude=["id"])
+
+    # Check if equal venue already exists
+    existing_venue = await db.venues.find_one(data)
+    if existing_venue:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            f"Venue already exists - ID {str(existing_venue['_id'])}",
+        )
+
+    # Insert venue into db
     log.info(f"Creating venue with data:\n{data}")
     result = await db.venues.insert_one(data)
     log.info(f"Created venue with id {result.inserted_id}")

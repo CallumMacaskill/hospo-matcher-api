@@ -91,3 +91,25 @@ class TestCreate:
         response = await async_client.post(self.endpoint, json=body)
         result = response.json()
         assert ObjectId(result)
+
+    async def test_create_invalid_empty(self, async_client: AsyncClient):
+        response = await async_client.post(self.endpoint, json={})
+        assert response.status_code == 422
+
+    async def test_create_invalid_hours(self, async_client: AsyncClient):
+        body = {
+            "name": "Invalid Venue Hours",
+            "region": "NZ-AUK",
+            "hour_open": 0,
+            "hour_closed": 25,
+        }
+        response = await async_client.post(self.endpoint, json=body)
+        assert response.status_code == 422
+
+    async def test_create_invalid_duplicate(
+        self, async_client: AsyncClient, synthetic_venues
+    ):
+        sample_venue = synthetic_venues[0].copy()
+        del sample_venue["id"]
+        response = await async_client.post(self.endpoint, json=sample_venue)
+        assert response.status_code == 400
