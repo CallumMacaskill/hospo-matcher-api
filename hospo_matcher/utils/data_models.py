@@ -45,7 +45,7 @@ class UserVotes(BaseModel):
 class Session(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     code: str
-    location: RegionCodes = RegionCodes.GreaterWellington
+    location: RegionCodes
     date_time: str = Field(
         default_factory=lambda: datetime.now()
         .astimezone()
@@ -67,9 +67,11 @@ class Venue(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True)
 
+
 class VenueFilters(BaseModel):
     n: int = 10
     exclude_ids: list[str] = []
     include_ids: list[str] = []
+
 
 settings = Settings()

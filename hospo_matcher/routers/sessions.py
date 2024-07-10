@@ -14,6 +14,15 @@ async def create_session(session: Session, db: DBClientDep) -> str:
     Create a session document in the database.
     """
     data = session.model_dump(by_alias=True, exclude=["id"])
+
+    # Check if session code already exists
+    existing_session = await db.sessions.find_one({"code": data["code"]})
+    if existing_session:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            f"Code already exists in session with ID - '{str(existing_session['_id'])}'",
+        )
+
     log.info(f"Creating session with data:\n{data}")
     result = await db.sessions.insert_one(data)
     log.info(f"Created session with id {result.inserted_id}")
