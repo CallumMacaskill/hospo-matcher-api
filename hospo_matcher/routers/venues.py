@@ -55,7 +55,7 @@ async def create_venue(venue: Venue, db: DBClientDep) -> str:
     if existing_venue:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
-            f"Venue already exists - ID {str(existing_venue['_id'])}",
+            f"Venue already exists - ID '{str(existing_venue['_id'])}'",
         )
 
     # Insert venue into db
