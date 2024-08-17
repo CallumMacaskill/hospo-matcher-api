@@ -6,7 +6,7 @@ from httpx import AsyncClient
 class TestRead:
     async def test_read_valid_session(self, async_client, synthetic_sessions):
         """
-        Read a valid session.
+        Read a session.
         """
         sample_session = random.choice(synthetic_sessions)
         response = await async_client.get(f"/sessions/{sample_session['code']}")
@@ -16,7 +16,7 @@ class TestRead:
 
     async def test_read_invalid_session(self, async_client):
         """
-        Read a session that does not exist.
+        Attempt to read a non-existent session.
         """
         response = await async_client.get("/sessions/123")
         assert response.status_code == 404
@@ -24,6 +24,9 @@ class TestRead:
 
 class TestCreate:
     async def test_create_valid_session(self, async_client: AsyncClient):
+        """
+        Create a session with valid attributes.
+        """
         body = {
             "code": "valid_code",
             "location": "NZ-AUK",
@@ -34,6 +37,9 @@ class TestCreate:
     async def test_create_invalid_duplicate_code(
         self, async_client: AsyncClient, synthetic_sessions
     ):
+        """
+        Attempt to create a session with the same code as another session.
+        """
         sample_venue = synthetic_sessions[0].copy()
         body = {"code": sample_venue["code"], "location": sample_venue["location"]}
         response = await async_client.post("/sessions/", json=body)
@@ -44,6 +50,9 @@ class TestVotes:
     async def test_valid_votes(
         self, async_client: AsyncClient, synthetic_sessions, synthetic_venues
     ):
+        """
+        Submit user votes for new venue IDs.
+        """
         # Get sample session and user id
         session = synthetic_sessions[0]
         user_ids = list(session["user_votes"].keys())
@@ -72,6 +81,9 @@ class TestVotes:
         assert local_votes.sort() == db_votes.sort()
 
     async def test_invalid_code(self, async_client: AsyncClient):
+        """
+        Attempt to submit votes on a non-existent session.
+        """
         body = {"upvotes": []}
         response = await async_client.post(f"/sessions/abc/user_abc", json=body)
         assert response.status_code == 404
@@ -80,6 +92,9 @@ class TestVotes:
     async def test_invalid_venue_ids(
         self, async_client: AsyncClient, synthetic_sessions
     ):
+        """
+        Attempt to vote for non-existent venues.
+        """
         session = synthetic_sessions[0]
         venue_ids = ["000000000000000000000000", "111111111111111111111111"]
         body = {"upvotes": venue_ids}
@@ -97,8 +112,11 @@ class TestVotes:
     async def test_invalid_bson_ids(
         self, async_client: AsyncClient, synthetic_sessions
     ):
+        """
+        Attempt to vote for venues with bad IDs.
+        """
         session = synthetic_sessions[0]
-        venue_ids = ["abc", "def"]
+        venue_ids = ["abc"]
         body = {"upvotes": venue_ids}
         response = await async_client.post(
             f"/sessions/{session['code']}/user_abc", json=body
