@@ -71,8 +71,12 @@ class TestVotes:
         db_votes = updated_session["user_votes"][user_id]
         assert local_votes.sort() == db_votes.sort()
 
-    async def test_duplicate_votes(self, async_client: AsyncClient):
-        pass
+    async def test_invalid_code(self, async_client: AsyncClient):
+        body = {"upvotes": []}
+        response = await async_client.post(f"/sessions/abc/user_abc", json=body)
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Session with code abc not found."}
 
     async def test_invalid_user_id(self, async_client: AsyncClient):
-        pass
+        body = {"upvotes": []}
+        response = await async_client.post(f"")
