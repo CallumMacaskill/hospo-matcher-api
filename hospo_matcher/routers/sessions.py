@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from hospo_matcher.utils.data_models import Session, UserVotes
 from hospo_matcher.utils.dependencies import DBClientDep
+from hospo_matcher.utils.helper_functions import str_to_bson_ids
 from hospo_matcher.utils.logger import log
 
 router = APIRouter(prefix="/sessions")
@@ -14,6 +15,15 @@ async def create_session(session: Session, db: DBClientDep) -> str:
     Create a session document in the database.
     """
     data = session.model_dump(by_alias=True, exclude=["id"])
+
+    # Check if session code already exists
+    existing_session = await db.sessions.find_one({"code": data["code"]})
+    if existing_session:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            f"Code already exists in session with ID - '{str(existing_session['_id'])}'",
+        )
+
     log.info(f"Creating session with data:\n{data}")
     result = await db.sessions.insert_one(data)
     log.info(f"Created session with id {result.inserted_id}")
@@ -46,13 +56,26 @@ async def submit_votes(
     """
     log.info(f"Adding votes to session {code} under user {user_id}")
 
-    # Get user's existing votes
+    # Get session
     session_doc = await db.sessions.find_one({"code": code})
     if session_doc is None:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, f"Session with code {code} not found."
         )
     session = Session(**session_doc)
+
+    # Check that venue IDs are valid BSON ObjectIds before converting
+    venue_bson_ids = str_to_bson_ids(votes.upvotes)
+
+    # Check that upvoted venues exist
+    results = db.venues.find({"_id": {"$in": venue_bson_ids}})
+    matched_venues = await results.to_list(len(votes.upvotes))
+    matched_venue_ids = [str(venue["_id"]) for venue in matched_venues]
+    invalid_ids = list(votes.upvotes - set(matched_venue_ids))
+    if invalid_ids:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, f"Venues with IDs not found: {str(invalid_ids)}"
+        )
 
     # Add new votes
     votes.upvotes.update(session.user_votes[user_id])

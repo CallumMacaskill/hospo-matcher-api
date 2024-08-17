@@ -6,7 +6,7 @@ from hospo_matcher.utils.data_models import RegionCodes, Session, Venue
 from hospo_matcher.utils.logger import log
 
 
-async def load_synthetic_venues(db_client: AsyncIOMotorDatabase) -> list[str]:
+async def load_synthetic_venues(db_client: AsyncIOMotorDatabase) -> dict[str:dict]:
     """
     Generate and insert synthetic venues into test db.
     """
@@ -26,12 +26,16 @@ async def load_synthetic_venues(db_client: AsyncIOMotorDatabase) -> list[str]:
     # Insert into collection
     result = await db_client.venues.insert_many(venues)
     log.info(f"Inserted {len(result.inserted_ids)} venues")
-    return [str(id) for id in result.inserted_ids]
+
+    # Reformat ID object
+    for venue in venues:
+        venue["id"] = str(venue.pop("_id"))
+    return venues
 
 
 async def load_synthetic_sessions(
     db_client: AsyncIOMotorDatabase, venue_ids: list[str]
-) -> list[str]:
+) -> dict[str: dict]:
     """
     Generate and insert synthetic sessions into test db.
     """
@@ -61,4 +65,8 @@ async def load_synthetic_sessions(
     await db_client.sessions.create_index("code", unique=True)
     result = await db_client.sessions.insert_many(sessions)
     log.info(f"Inserted {len(result.inserted_ids)} sessions")
-    return [str(id) for id in result.inserted_ids]
+
+    # Reformat ID object
+    for session in sessions:
+        session["id"] = str(session.pop("_id"))
+    return sessions
