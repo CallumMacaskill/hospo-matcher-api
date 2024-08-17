@@ -82,6 +82,18 @@ class TestRead:
         response = await async_client.post(self.endpoint, json=body)
         assert response.status_code == 400
 
+    async def test_read_invalid_bson_id(self, async_client: AsyncClient):
+        """
+        Attempt to include and exclude non-existent venues.
+        """
+        body = {
+            "exclude_ids": ["abc"],
+        }
+        response = await async_client.post(self.endpoint, json=body)
+        assert response.status_code == 400
+        response_message = response.json()
+        assert response_message["detail"] == "ID is not a valid BSON ObjectId - 'abc'"
+
     async def test_read_invalid_ids(self, async_client: AsyncClient):
         """
         Attempt to include and exclude non-existent venues.

@@ -122,6 +122,4 @@ class TestVotes:
             f"/sessions/{session['code']}/user_abc", json=body
         )
         assert response.status_code == 400
-        assert response.json() == {
-            "detail": "Venue ID is not a valid BSON ObjectId - 'abc'"
-        }
+        assert response.json() == {"detail": "ID is not a valid BSON ObjectId - 'abc'"}

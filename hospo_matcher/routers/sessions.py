@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from hospo_matcher.utils.data_models import Session, UserVotes
 from hospo_matcher.utils.dependencies import DBClientDep
+from hospo_matcher.utils.helper_functions import str_to_bson_ids
 from hospo_matcher.utils.logger import log
 
 router = APIRouter(prefix="/sessions")
@@ -64,15 +65,7 @@ async def submit_votes(
     session = Session(**session_doc)
 
     # Check that venue IDs are valid BSON ObjectIds before converting
-    venue_bson_ids = []
-    for venue_id in votes.upvotes:
-        if ObjectId.is_valid(venue_id):
-            venue_bson_ids.append(ObjectId(venue_id))
-        else:
-            raise HTTPException(
-                status.HTTP_400_BAD_REQUEST,
-                f"Venue ID is not a valid BSON ObjectId - '{venue_id}'",
-            )
+    venue_bson_ids = str_to_bson_ids(votes.upvotes)
 
     # Check that upvoted venues exist
     results = db.venues.find({"_id": {"$in": venue_bson_ids}})
