@@ -38,3 +38,41 @@ class TestCreate:
         body = {"code": sample_venue["code"], "location": sample_venue["location"]}
         response = await async_client.post("/sessions/", json=body)
         assert response.status_code == 400
+
+
+class TestVotes:
+    async def test_valid_votes(
+        self, async_client: AsyncClient, synthetic_sessions, synthetic_venues
+    ):
+        # Get sample session and user id
+        session = synthetic_sessions[0]
+        user_ids = list(session["user_votes"].keys())
+        user_id = user_ids[0]
+
+        # Get sample venues for votes
+        venue_ids = {venue["id"] for venue in synthetic_venues}
+        user_votes = session["user_votes"][user_id]
+        venue_id_difference = list(venue_ids - set(user_votes))
+        venue_id_votes = random.sample(venue_id_difference, 5)
+
+        # Submit votes
+        body = {"upvotes": venue_id_votes + venue_id_votes}
+        response = await async_client.post(
+            f"/sessions/{session['code']}/{user_id}", json=body
+        )
+        assert response.status_code == 200
+        assert response.json() == session["id"]
+
+        # Validate votes are applied
+        response = await async_client.get(f"/sessions/{session['code']}")
+        assert response.status_code == 200
+        updated_session = response.json()
+        local_votes = user_votes + venue_id_votes
+        db_votes = updated_session["user_votes"][user_id]
+        assert local_votes.sort() == db_votes.sort()
+
+    async def test_duplicate_votes(self, async_client: AsyncClient):
+        pass
+
+    async def test_invalid_user_id(self, async_client: AsyncClient):
+        pass
