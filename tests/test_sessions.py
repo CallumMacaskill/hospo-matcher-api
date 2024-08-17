@@ -56,7 +56,7 @@ class TestVotes:
         venue_id_votes = random.sample(venue_id_difference, 5)
 
         # Submit votes
-        body = {"upvotes": venue_id_votes + venue_id_votes}
+        body = {"upvotes": venue_id_votes}
         response = await async_client.post(
             f"/sessions/{session['code']}/{user_id}", json=body
         )
@@ -77,6 +77,16 @@ class TestVotes:
         assert response.status_code == 404
         assert response.json() == {"detail": "Session with code abc not found."}
 
-    async def test_invalid_user_id(self, async_client: AsyncClient):
-        body = {"upvotes": []}
-        response = await async_client.post(f"")
+    async def test_invalid_venue_ids(
+        self, async_client: AsyncClient, synthetic_sessions
+    ):
+        session = synthetic_sessions[0]
+        venue_ids = ["000000000000000000000000", "111111111111111111111111"]
+        body = {"upvotes": venue_ids}
+        response = await async_client.post(
+            f"/sessions/{session['code']}/user_abc", json=body
+        )
+        assert response.status_code == 404
+        assert response.json() == {
+            "detail": f"Venues with IDs not found: {str(venue_ids)}"
+        }

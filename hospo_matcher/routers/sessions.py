@@ -55,13 +55,24 @@ async def submit_votes(
     """
     log.info(f"Adding votes to session {code} under user {user_id}")
 
-    # Get user's existing votes
+    # Get session
     session_doc = await db.sessions.find_one({"code": code})
     if session_doc is None:
         raise HTTPException(
             status.HTTP_404_NOT_FOUND, f"Session with code {code} not found."
         )
     session = Session(**session_doc)
+
+    # Check that upvoted venues exist
+    # TODO: Add handling for invalid type conversion
+    results = db.venues.find({"_id": {"$in": [ObjectId(id) for id in votes.upvotes]}})
+    matched_venues = await results.to_list(len(votes.upvotes))
+    matched_venue_ids = [str(venue["_id"]) for venue in matched_venues]
+    invalid_ids = list(votes.upvotes - set(matched_venue_ids))
+    if invalid_ids:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND, f"Venues with IDs not found: {str(invalid_ids)}"
+        )
 
     # Add new votes
     votes.upvotes.update(session.user_votes[user_id])
