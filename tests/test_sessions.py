@@ -86,10 +86,13 @@ class TestVotes:
         response = await async_client.post(
             f"/sessions/{session['code']}/user_abc", json=body
         )
+
+        # Validate response
         assert response.status_code == 404
-        assert response.json() == {
-            "detail": f"Venues with IDs not found: {str(venue_ids)}"
-        }
+        response_message = response.json()
+        assert str.startswith(response_message["detail"], "Venues with IDs not found: ")
+        for id in venue_ids:
+            assert id in response_message["detail"]
 
     async def test_invalid_bson_ids(
         self, async_client: AsyncClient, synthetic_sessions
