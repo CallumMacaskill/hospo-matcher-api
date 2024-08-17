@@ -90,3 +90,17 @@ class TestVotes:
         assert response.json() == {
             "detail": f"Venues with IDs not found: {str(venue_ids)}"
         }
+
+    async def test_invalid_bson_ids(
+        self, async_client: AsyncClient, synthetic_sessions
+    ):
+        session = synthetic_sessions[0]
+        venue_ids = ["abc", "def"]
+        body = {"upvotes": venue_ids}
+        response = await async_client.post(
+            f"/sessions/{session['code']}/user_abc", json=body
+        )
+        assert response.status_code == 400
+        assert response.json() == {
+            "detail": "Venue ID is not a valid BSON ObjectId - 'abc'"
+        }

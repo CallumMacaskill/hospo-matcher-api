@@ -63,9 +63,19 @@ async def submit_votes(
         )
     session = Session(**session_doc)
 
+    # Check that venue IDs are valid BSON ObjectIds before converting
+    venue_ids = []
+    for venue_id in votes.upvotes:
+        if ObjectId.is_valid(venue_id):
+            venue_ids.append(venue_id)
+        else:
+            raise HTTPException(
+                status.HTTP_400_BAD_REQUEST,
+                f"Venue ID is not a valid BSON ObjectId - '{venue_id}'",
+            )
+
     # Check that upvoted venues exist
-    # TODO: Add handling for invalid type conversion
-    results = db.venues.find({"_id": {"$in": [ObjectId(id) for id in votes.upvotes]}})
+    results = db.venues.find({"_id": {"$in": venue_ids}})
     matched_venues = await results.to_list(len(votes.upvotes))
     matched_venue_ids = [str(venue["_id"]) for venue in matched_venues]
     invalid_ids = list(votes.upvotes - set(matched_venue_ids))
