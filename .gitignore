@@ -164,3 +164,6 @@ database/data/
 
 # Environment variable file
 .env.local
+
+# Web page dumps
+web_scraping/search_dumps*
