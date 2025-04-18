@@ -1,11 +1,6 @@
-# Project Description
-Choosing a cafe, restaurant, or bar to go to when meeting up with friends can be tricky!
+# Hospo Matcher API
+The original plan for this product was to implement it as a web app with extensive features and a high-fidelity UI/UX. During development, the plan changed to target a single, main feature and for it to be implemented as a plain JS website. 
 
-Let's change this process from a couple of suggestions and "up to you" messages, to a fun, gamified, collaborative experience.
+The finished product is in another repository - [Midpoint](https://github.com/CallumMacaskill/midpoint).
 
-You and your friends can find which venues you all like, tailored to your specific preferences through a 'swipe and match' style UI with a frictionless user flow.
-
-# Repository Description
-This repository contains the API that handles interactions with app sessions and interfaces with the database.
-
-Readme is a WIP
+This repository exists as a good example of an asynchronous FastAPI project featuring an extensive test suite with mock data and dependency overrides.
